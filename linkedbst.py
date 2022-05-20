@@ -9,8 +9,9 @@ import random
 from binary_search_tree.abstractcollection import AbstractCollection
 from binary_search_tree.bstnode import BSTNode
 from Stack.linkedstack import LinkedStack
-from Queue.linkedqueue import LinkedQueue
-from math import log
+import sys
+
+sys.setrecursionlimit(10000)
 
 
 class LinkedBST(AbstractCollection):
@@ -295,6 +296,7 @@ class LinkedBST(AbstractCollection):
             return node
 
         self._root = recursive(ellemnts)
+        return self
 
     def successor(self, item):
         """
@@ -350,9 +352,10 @@ class LinkedBST(AbstractCollection):
 
         def list_find(words, random_wods):
             start = start_time()
-            for word in words:
-                if word in random_wods:
-                    continue
+            for word in random_wods:
+                for word_ in words:
+                    if word == word_:
+                        break
             finish = finish_time()
             return finish - start
 
@@ -390,37 +393,22 @@ class LinkedBST(AbstractCollection):
 
         def main():
             whole_words = open_file(path)
-            random_10k_words = random.sample(whole_words, 10000)
+            # random_words = random.sample(whole_words, 10000)
+            random_words = random.sample(whole_words, 1000)
             result = ''
-            result += f'час пошуку 10000 випадкових слів у впорядкованому за абеткою словнику: ' \
-                      f'{list_find(whole_words, random_10k_words)}' + '\n'
-            result += f'2){find_binary_order_tree(whole_words, random_10k_words)}' + '\n'
-            result += f'3){find_binary_not_order_tree(whole_words, random_10k_words)}' + '\n'
-            result += f'4){find_binary_balanced_tree(whole_words, random_10k_words)}'
+            result += f'1)sorted list: ' \
+                      f'{list_find(whole_words, random_words)}' + '\n'
+            result += f'2)ordered list transfered in tree: {find_binary_order_tree(whole_words, random_words)}' + '\n'
+            result += f'3)randomly filed tree: {find_binary_not_order_tree(whole_words, random_words)}' + '\n'
+            result += f'4)balanced tree: {find_binary_balanced_tree(whole_words, random_words)}'
 
             return result
 
+        # return list_find(open_file(path), random.sample(open_file(path), 10000))
         return main()
 
 
 if __name__ == '__main__':
     lbst = LinkedBST()
-    # lbst.add(4)
-    # lbst.add(9)
-    # lbst.add(10)
-    # lbst.add(3)
-    # lbst.add(8)
-    # lbst.add(5)
-    # lbst.add(7)
-    # print(lbst)
-    # print(lbst.height())
-    # print(lbst.is_balanced())
-    # print(lbst.rebalance())
-    # print(lbst)
-    # tree = LinkedBST()
-    # for i in range(1, 8):
-    #     tree.add(i)
-    # print(tree)
-    # tree.rebalance()
-    # print(tree)
-    print(lbst.demo_bst('words.txt'))
+    # print(lbst.demo_bst('words.txt'))
+    print(lbst.demo_bst('shorter_words'))
